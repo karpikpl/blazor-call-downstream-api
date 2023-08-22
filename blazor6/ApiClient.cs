@@ -6,7 +6,7 @@ public interface IApiClient
     Task<string> GetDataApiDownstreamAsync();
 }
 
-public class ApiClient: IApiClient
+public class ApiClient: IApiClient 
 {
     private readonly HttpClient _httpClient;
     private readonly Microsoft.Identity.Abstractions.IAuthorizationHeaderProvider _authorizationHeaderProvider;

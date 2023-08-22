@@ -6,24 +6,20 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Graph = Microsoft.Graph;
-using Blazor.Data;
+using blazor6.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var initialApiScopes = builder.Configuration["MyApi:Scopes"]?.Split(' ');
-var initialScopes = builder.Configuration["DownstreamApi:Scopes"]?.Split(' ').Concat(initialApiScopes).ToArray();
+var initialScopes = builder.Configuration["MyApi:Scopes"]?.Split(' ');
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
         .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
-            .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
-            .AddDownstreamApi("MyApi", options =>
-            {
-                options.Scopes = initialApiScopes;
+            .AddDownstreamApi("MyApi", options => {
                 options.BaseUrl = builder.Configuration["MyApi:BaseUrl"];
-            })
+                options.Scopes = initialScopes;
+                })
             .AddInMemoryTokenCaches();
 
 builder.Services.AddHttpClient<IApiClient, ApiClient>(client =>
@@ -58,6 +54,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 app.MapBlazorHub();

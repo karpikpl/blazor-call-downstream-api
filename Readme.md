@@ -3,6 +3,8 @@
 ## Blazor
 Created with `dotnet new blazorserver -f net7.0 --auth SingleOrg --calls-graph --tenant-id 8ace3cb7-5c52-4b89-ba78-31a116187fb6`
 
+To call external API: `dotnet new blazorserver -f net6.0 --auth SingleOrg --called-api-url https://api.apps.karpala.org:5002`.
+
 https://learn.microsoft.com/en-us/azure/active-directory/develop/scenario-web-api-call-api-app-configuration?tabs=aspnetcore#option-2-call-a-downstream-web-api-other-than-microsoft-graph
 
 * Add package `dotnet add package Microsoft.Identity.Web.DownstreamApi`
@@ -54,8 +56,9 @@ https://learn.microsoft.com/en-us/azure/active-directory/develop/scenario-web-ap
   "DetailedErrors": true,
   "Logging": {
     "LogLevel": {
-      "Default": "Debug",
-      "Microsoft.AspNetCore": "Debug"
+        "Default": "Information",
+        "Microsoft.AspNetCore": "Warning",
+        "Microsoft.AspNetCore.Server.Kestrel": "Information"
     }
   },
   "Kestrel": {
@@ -103,9 +106,9 @@ https://learn.microsoft.com/en-us/azure/active-directory/develop/scenario-protec
     },
     "Logging": {
       "LogLevel": {
-        "Default": "Debug",
-        "Microsoft.AspNetCore": "Debug",
-        "Microsoft.AspNetCore.Server.Kestrel": "Debug"
+        "Default": "Information",
+        "Microsoft.AspNetCore": "Warning",
+        "Microsoft.AspNetCore.Server.Kestrel": "Information"
       }
     },
     "AllowedHosts": "*",
