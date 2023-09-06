@@ -1,4 +1,8 @@
 ﻿@page "/"
+@attribute [Authorize]
+@inject IApiClient client;
+@inject Microsoft.Identity.Web.MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
+
 
 <PageTitle>Index</PageTitle>
 
@@ -6,4 +10,68 @@
 
 Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@if (done)
+{
+    <p>Done!</p>
+}
+else
+{
+    <p>@loading</p>
+}
+
+@code {
+    private bool done = false;
+    private bool initStarted = false;
+    private string loading  = "Loading...";
+
+    override protected async Task OnInitializedAsync()
+    {
+
+    }
+
+    @* override protected async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!initStarted)
+        {
+            initStarted = true;
+            try
+            {
+                var result0 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 10%";
+                StateHasChanged();
+                var result1 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 20%";
+                StateHasChanged();
+                var result2 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 30%";
+                StateHasChanged();
+                var result3 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 40%";
+                StateHasChanged();
+                var result4 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 50%";
+                StateHasChanged();
+                var result5 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 60%";
+                StateHasChanged();
+                var result6 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 70%";
+                StateHasChanged();
+                var result7 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 80%";
+                StateHasChanged();
+                var result8 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 90%";
+                StateHasChanged();
+                var result9 = await client.GetDataApiDownstreamAsync();
+
+                done = true;
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                ConsentHandler.HandleException(ex);
+            }
+        }
+    } *@
+}
