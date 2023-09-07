@@ -8,3 +8,6 @@
 @using Microsoft.JSInterop
 @using Blazor
 @using Shared
+@using Microsoft.Identity.Web
+@using Microsoft.Identity.Web.Resource
+@attribute [AuthorizeForScopes(Scopes = new[] { "api://dff69225-ce80-44df-9294-d9399d585415/Api.Foo" })]
