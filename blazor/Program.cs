@@ -60,7 +60,11 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapControllers();
-app.MapBlazorHub();
+app.MapBlazorHub(options => {
+        options.WebSockets.CloseTimeout = new TimeSpan(0, 0, 30);
+        options.LongPolling.PollTimeout = new TimeSpan(0, 1, 0);
+        options.TransportSendTimeout = new TimeSpan(0, 1, 0);
+    });
 app.MapFallbackToPage("/_Host");
 
 app.Run();

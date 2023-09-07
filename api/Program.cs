@@ -39,7 +39,7 @@ app.MapGet("/Foo", async context =>
 {
     Console.WriteLine("Token: {0}", context.Request.Headers["Authorization"].ToString());
 
-    await Task.Delay(1000);
+    await Task.Delay(10000);
     await context.Response.WriteAsJsonAsync(new { Foo = "This is Foo Data from Api" });
 }).RequireAuthorization().RequireScope("Api.Foo");
 

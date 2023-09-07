@@ -10,7 +10,7 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Hello, @user!</h1>
 
 Welcome to your new app.
 
@@ -25,13 +25,12 @@ else
 
 @code {
     private bool done = false;
-    private bool initStarted = false;
     private string loading = "Loading...";
+
+    private string user = "Unknown";
 
     override protected async Task OnInitializedAsync()
     {
-        const string ServiceName = "MyApi";
-
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
         if (authState.User?.Identity?.IsAuthenticated == false)
@@ -40,104 +39,71 @@ else
             return;
         }
 
-        if (!initStarted)
+        user = authState?.User?.Identity?.Name ?? "Unknown";
+
+        try
         {
-            initStarted = true;
-            try
+            // this is to avoid getting data twice when pre-rendering
+            var data = await _memoryCache.GetOrCreateAsync<string>("data", async e =>
             {
-                var data = await _memoryCache.GetOrCreateAsync<string>("data", async e =>
-                {
-                    e.SetOptions(new MemoryCacheEntryOptions
-                        {
-                            AbsoluteExpirationRelativeToNow =
+                e.SetOptions(new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow =
     TimeSpan.FromSeconds(30)
-                        });
+                    });
 
-                    var result0 = await client.GetDataApiDownstreamAsync();
-                    loading = "Loading... 10%";
-                    // StateHasChanged();
-                    var result1 = await client.GetDataApiDownstreamAsync();
-                    loading = "Loading... 20%";
-                    //StateHasChanged();
-                    var result2 = await client.GetDataApiDownstreamAsync();
-                    loading = "Loading... 30%";
-                    // StateHasChanged();
-                    var result3 = await client.GetDataApiDownstreamAsync();
-                    loading = "Loading... 40%";
-                    // StateHasChanged();
-                    var result4 = await client.GetDataApiDownstreamAsync();
-                    loading = "Loading... 50%";
-                    //StateHasChanged();
-                    var result5 = await client.GetDataApiDownstreamAsync();
-                    loading = "Loading... 60%";
-                    // StateHasChanged();
-                    var result6 = await client.GetDataApiDownstreamAsync();
-                    loading = "Loading... 70%";
-                    // StateHasChanged();
-                    var result7 = await client.GetDataApiDownstreamAsync();
-                    loading = "Loading... 80%";
-                    //StateHasChanged();
-                    var result8 = await client.GetDataApiDownstreamAsync();
-                    loading = "Loading... 90%";
-                    //StateHasChanged();
-                    var result9 = await client.GetDataApiDownstreamAsync();
+                var result0 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 10%";
+                StateHasChanged();
+                var result1 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 20%";
+                StateHasChanged();
+                var result2 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 30%";
+                StateHasChanged();
+                var result3 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 40%";
+                StateHasChanged();
+                var result4 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 50%";
+                StateHasChanged();
+                var result5 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 60%";
+                StateHasChanged();
+                var result6 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 70%";
+                StateHasChanged();
+                var result7 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 80%";
+                StateHasChanged();
+                var result8 = await client.GetDataApiDownstreamAsync();
+                loading = "Loading... 90%";
+                StateHasChanged();
+                var result9 = await client.GetDataApiDownstreamAsync();
 
-                    return result9;
-                });
+                return result9;
+            });
 
-                done = true;
-                // StateHasChanged();
-            }
-            catch (Exception msalUiRequiredException)
-            {
-                ConsentHandler.HandleException(msalUiRequiredException);
-            }
+            done = true;
+            StateHasChanged();
         }
+        catch (Exception msalUiRequiredException)
+        {
+            ConsentHandler.HandleException(msalUiRequiredException);
+        }
+
+        await base.OnInitializedAsync();
     }
 
-    @* override protected async Task OnAfterRenderAsync(bool firstRender)
-{
-if (!initStarted)
-{
-initStarted = true;
-try
-{
-var result0 = await client.GetDataApiDownstreamAsync();
-loading = "Loading... 10%";
-StateHasChanged();
-var result1 = await client.GetDataApiDownstreamAsync();
-loading = "Loading... 20%";
-StateHasChanged();
-var result2 = await client.GetDataApiDownstreamAsync();
-loading = "Loading... 30%";
-StateHasChanged();
-var result3 = await client.GetDataApiDownstreamAsync();
-loading = "Loading... 40%";
-StateHasChanged();
-var result4 = await client.GetDataApiDownstreamAsync();
-loading = "Loading... 50%";
-StateHasChanged();
-var result5 = await client.GetDataApiDownstreamAsync();
-loading = "Loading... 60%";
-StateHasChanged();
-var result6 = await client.GetDataApiDownstreamAsync();
-loading = "Loading... 70%";
-StateHasChanged();
-var result7 = await client.GetDataApiDownstreamAsync();
-loading = "Loading... 80%";
-StateHasChanged();
-var result8 = await client.GetDataApiDownstreamAsync();
-loading = "Loading... 90%";
-StateHasChanged();
-var result9 = await client.GetDataApiDownstreamAsync();
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
 
-done = true;
-StateHasChanged();
-}
-catch (Exception ex)
-{
-ConsentHandler.HandleException(ex);
-}
-}
-} *@
+
+
+#line default
+#line hidden
+#nullable disable
+
 }
